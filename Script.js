@@ -2,6 +2,7 @@
 let interViewArr = [];
 let rejectedArr = [];
 let currentState = 'All';
+
 // All Btn Selection area
 let AllBtn = document.getElementById('All');
 let InterviewBtn = document.getElementById('Interview');
@@ -34,18 +35,19 @@ function buttonToggoling(Button, Section) {
 
     currentState = Button;
 
-    if (Button == 'All') {
+    if (currentState == 'All') {
+        counter(); 
         SectionCounter.innerText = AllTabSection.children.length;
+        
+    } else if (currentState == 'Interview') {
         counter();
-    } else if (Button == 'Interview') {
         document.getElementById('SectionCounter').innerText = `${interViewArr.length} of ${AllTabSection.children.length}`;
         renderData(interViewArr);
-        counter();
 
-    } else if (Button == 'Rejected') {
+    } else if (currentState == 'Rejected') {
+        counter();
         SectionCounter.innerText = `${rejectedArr.length} of ${AllTabSection.children.length}`;
         renderData(rejectedArr);
-        counter();
     }
 };
 // counting function
@@ -88,15 +90,16 @@ AllTabSection.addEventListener('click', (e) => {
         let RejectData = { heading, headingParagroph, salary, skill, status: 'REJECTED' };
         status.innerText = 'REJECTED';
         status.classList.add('btn-error')
-        status.classList.remove('btn-success') 
+        status.classList.remove('btn-success')
         exist = rejectedArr.find(item => item.heading == heading)
         if (!exist) {
             rejectedArr.push(RejectData);
-            interViewArr = interViewArr.filter(item => item.heading !== heading); 
+            interViewArr = interViewArr.filter(item => item.heading !== heading);
 
             if (currentState == 'Interview') renderData(interViewArr);
             if (currentState == 'Rejected') renderData(rejectedArr);
             counter()
+
         }
     } else if (e.target.matches('.fa-trash-can')) {
         interViewArr = interViewArr.filter(item => item.heading !== heading)
@@ -127,6 +130,8 @@ RenderSection.addEventListener('click', (e) => {
         if (currentState === "Interview") renderData(interViewArr);
         if (currentState === "Rejected") renderData(rejectedArr);
         counter();
+        console.log(currentState);
+
     } else if (e.target.classList.contains('rejected')) {
         let createObj = { heading, headingParagroph, salary, skill, status: 'REJECTED' }
         let exist = rejectedArr.find(item => item.heading === heading)
